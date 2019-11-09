@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Contacts Manager</title>
+  <script src="javascripts/jquery.js"></script>
+  <script src="javascripts/handlebars.js"></script>
+  <script src="javascripts/script.js"></script>
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+<body>
+  <header>
+    <h1>Contact Manager</h1>
+    <h2>Using Handlebars, jQuery, and good ol' plain CSS</h2>
+  </header>
+  <main>
+    <nav>
+      <input type="button" value="Add Contact" data-action="show_form"  data-intent="Add Contact"/>
+      <input type="text" name="seach" id="search" placeholder="Search">
+    </nav>
+    <div id="message"></div>
+    <section id="contacts"></section>
+  </main>
+  <div id="form_container">
+    <h2></h2>
+    <form action="#" method="POST" data-id="" novalidate>
+        <label for="full_name">Full name:</label>
+        <div class="input_container">
+          <input type="text" value="" name="full_name" required>
+        </div>
+        <label for="email">Email address:</label>
+        <div class="input_container">
+          <input type="email" value="" name="email" required pattern=".+@.+">
+        </div>
+        <label for="phone_number">Telephone number:</label>
+        <div class="input_container">
+          <input type="text" value="" name="phone_number" required pattern="\d+">
+        </div>
+        <label for="tags">Tags (comma separated):</label>
+        <div class="input_container">
+          <input type="text" value="" name="tags">
+        </div>
+        <div id="form_actions">
+          <input type="submit" value="Submit" data-action="submit_form">
+          <input type="button" value="Cancel" data-action="hide_form">
+        </div>
+      </form>
+  </div>
+  <footer>
+    <p>Developed by Thinky Beast</p>
+  </footer>
+  <script id="contactTemplate" type="text/x-handlebars">
+    <div class="contact" data-id="{{id}}" data-contact="{{contactName}}">
+        <h3 class="name">{{full_name}}</h3>
+        <dl>
+          <dt>Phone Number:</dt>
+          <dd>{{phone_number}}</dd>
+          <dt>Email:</dt>
+          <dd>{{email}}</dd>
+          <dt>Tags</dt>
+          <dd>
+            <p class="tags">
+            {{#if tags}}
+              {{#each tags}}
+              <a class="tag" href="#">{{this}}</a>
+              {{/each}}
+            {{else}}
+              No tags
+            {{/if}}
+            </p>
+          </dd>
+        </dl>
+        <input type="button" value="Edit" data-action="show_form" data-intent="Edit Contact">
+        <input type="button" value="Delete" data-action="delete">
+      </div>
+  </script>
+</body>
+</html>
