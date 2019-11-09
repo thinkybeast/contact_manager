@@ -53,6 +53,7 @@ $(function(){
 
     hideForm: function(e) {
       e.preventDefault();
+
       this.$formContainer.slideUp();
       this.$main.slideDown();
     },
@@ -80,6 +81,7 @@ $(function(){
 
       if(this.$form[0].checkValidity()) {
         this.submitForm();
+        this.$message.find('a').trigger('click');
       } else {
         this.validateAllControls();
       }
@@ -129,6 +131,7 @@ $(function(){
           API.editContact(data);
           break;
       }
+
       this.$hideForm.trigger('click');
     },
 
@@ -136,6 +139,7 @@ $(function(){
       let obj = {};
       this.$form.serializeArray().forEach(input => obj[input.name] = input.value);
       obj.id = this.$form.attr('data-id') || undefined;
+      obj.tags = obj.tags.split(',').map(t => t.trim()).join(',');
       return obj;
     },
 
@@ -178,7 +182,7 @@ $(function(){
 
     filterTag: function(e) {
       e.preventDefault();
-      const tag = $(e.target).text();
+      const tag = $(e.target).text().trim();
       $matches = this.getTagMatches(tag);
 
       this.$message.html(`<p>Displaying contacts tagged with <span class="tag">${tag}</span></p> <a href="#">Show all contacts</a>`);
@@ -188,7 +192,10 @@ $(function(){
     },
 
     getTagMatches: function(tag) {
-      return $('.contact').has(`a:contains(${tag.trim()})`);
+      return $('.contact').filter(function(){
+        let $el = $(this).find(`a:contains(${tag})`);
+        return $el.text().trim() === tag;
+      });
     },
 
     unfilterTag: function(e) {
